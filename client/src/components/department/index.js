@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { DELETE_DEPARTMENT } from "../../utils/mutations";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { QUERY_DEPARTMENT } from "../../utils/queries";
@@ -29,6 +30,22 @@ export default function allDepartment() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editDepartment] = useMutation(EDIT_DEPARTMENT);
   console.log(department);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [deleteDepartment] = useMutation(DELETE_DEPARTMENT);
+
+  const handleDeleteClick = async (departmentId) => {
+    try {
+      const { data } = await deleteDepartment({
+        variables: {
+          id: departmentId,
+        },
+      });
+      console.log("Department deleted:", data.deleteDepartment);
+    } catch (error) {
+      console.error("Error deleting department:", error);
+    }
+  };
 
   const handleEditDepartment = async (departmentId, updatedFields) => {
     try {
@@ -136,7 +153,6 @@ export default function allDepartment() {
             margin="normal"
             variant="outlined"
           />
-          {/* Add other department fields as needed */}
           <Button onClick={handleFormSubmit} variant="outlined">
             Save
           </Button>
@@ -171,8 +187,7 @@ export default function allDepartment() {
                   </TableCell>
                   <TableCell align="right">
                     <Grid item xs={8}>
-                      <DeleteIcon />
-                      <DeleteForeverIcon />
+                      <DeleteIcon onClick={() => handleDeleteClick(department._id)}/>
                     </Grid>
                   </TableCell>
                 </TableRow>

@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { DELETE_EMPLOYEE } from "../../utils/mutations";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { QUERY_EMPLOYEE } from "../../utils/queries";
@@ -26,6 +27,25 @@ export default function allEmployee() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editEmployee] = useMutation(EDIT_EEMPLOYEE);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [deleteEmployee] = useMutation(DELETE_EMPLOYEE);
+
+  const handleDeleteClick = async (employeeId) => {
+    try {
+      const { data } = await deleteEmployee({
+        variables: {
+          id: employeeId,
+        },
+      });
+      console.log(data);
+      if (data.deleteEmployee && data.deleteEmployee.message) {
+        window.location.reload();
+      }
+      console.log("Employee deleted:", data.deleteEmployee);
+    } catch (error) {
+      console.error("Error deleting department:", error);
+    }
+  };
 
   const handleEditEmployee = async (employeeId, updatedFields) => {
     try {
@@ -38,11 +58,8 @@ export default function allEmployee() {
           },
         },
       });
-
-      // Handle success (e.g., show a success message)
       console.log("Employee edited:", data.editEmployee);
     } catch (error) {
-      // Handle error (e.g., show an error message)
       console.error("Error editing employee:", error);
     }
   };
@@ -252,8 +269,7 @@ export default function allEmployee() {
                     </TableCell>
                     <TableCell align="right">
                       <Grid item xs={8}>
-                        <DeleteIcon />
-                        <DeleteForeverIcon />
+                        <DeleteIcon  onClick={() => handleDeleteClick(employee._id)}/>
                       </Grid>
                     </TableCell>
                   </TableRow>

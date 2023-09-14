@@ -44,14 +44,10 @@ export default function AddRoleCard() {
         console.error('Error adding role: No data received.');
         return;
       }
-  
-      // Handle the response data as needed
       console.log('Role added:', data.createRole);
   
-      // Reset the form fields after successful submission
       setFormState({ title: '', salary: '', departmentName: '' });
     } catch (err) {
-      // Handle errors if needed
       console.error('Error adding role:', err.message);
     }
   };

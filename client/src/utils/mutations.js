@@ -32,6 +32,38 @@ export const CREATE_EMPLOYEE = gql`
     }
   }
 `;
+export const DELETE_EMPLOYEE = gql`
+  mutation DeleteEmployee($id: ID!) {
+    deleteEmployee(_id: $id) {
+      _id
+      firstName
+      lastName
+      role {
+        _id
+        title
+        salary
+        department {
+          _id
+          name
+        }
+      }
+      manager {
+        _id
+        firstName
+        lastName
+        role {
+          _id
+          title
+          salary
+          department {
+            _id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 export const EDIT_EEMPLOYEE = gql`
   mutation EditEmployee($_id: ID!, $input: EditEmployeeInput!) {
@@ -80,9 +112,9 @@ export const CREATE_ROLE = gql`
   }
 `;
 
-export const EDIT_ROLE = gql`
-mutation EditRole($_id: ID!, $input: EditRoleInput!) {
-  editRole(_id: $_id, input: $input) {
+export const DELETE_ROLE = gql`
+mutation DeleteRole($id: ID!) {
+  deleteRole(_id: $id) {
     _id
     title
     salary
@@ -91,7 +123,21 @@ mutation EditRole($_id: ID!, $input: EditRoleInput!) {
       name
     }
   }
-}`
+}`;
+
+export const EDIT_ROLE = gql`
+  mutation EditRole($_id: ID!, $input: EditRoleInput!) {
+    editRole(_id: $_id, input: $input) {
+      _id
+      title
+      salary
+      department {
+        _id
+        name
+      }
+    }
+  }
+`;
 
 export const CREATE_DEPARTMENT = gql`
   mutation CreateDepartment($input: CreateDepartmentInput!) {
@@ -101,10 +147,19 @@ export const CREATE_DEPARTMENT = gql`
   }
 `;
 
-export const EDIT_DEPARTMENT = gql`
-mutation EditDepartment($_id: ID!, $input: EditDepartmentInput!) {
-  editDepartment(_id: $_id, input: $input) {
+export const DELETE_DEPARTMENT = gql`
+mutation DeleteDepartment($id: ID!) {
+  deleteDepartment(_id: $id) {
     _id
     name
   }
 }`
+
+export const EDIT_DEPARTMENT = gql`
+  mutation EditDepartment($_id: ID!, $input: EditDepartmentInput!) {
+    editDepartment(_id: $_id, input: $input) {
+      _id
+      name
+    }
+  }
+`;

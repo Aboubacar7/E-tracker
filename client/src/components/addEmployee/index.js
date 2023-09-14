@@ -12,6 +12,7 @@ export default function AddEmploeeCard() {
   const [expanded, setExpanded] = React.useState(false);
   const [createEmployee] = useMutation(CREATE_EMPLOYEE);
 
+
   const [formState, setFormState] = useState({
     firstName: '',
     lastName: '',
@@ -29,7 +30,6 @@ export default function AddEmploeeCard() {
     console.log('Form submitted!');
     console.log('Form data:', formState);
 
-    // Perform the mutation
     createEmployee({
       variables: {
         input: {
@@ -41,9 +41,7 @@ export default function AddEmploeeCard() {
       },
     })
       .then((result) => {
-        // Handle the result after the mutation is executed
         console.log('Employee added:', result.data.createEmployee);
-        // Reset the form fields
         setFormState({
           firstName: '',
           lastName: '',
@@ -52,14 +50,12 @@ export default function AddEmploeeCard() {
         });
       })
       .catch((error) => {
-        // Handle errors if needed
         console.error('Error adding employee:', error);
       });
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    // Update the formState when input changes
     setFormState({ ...formState, [name]: value });
   };
 

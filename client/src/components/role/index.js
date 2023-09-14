@@ -16,6 +16,7 @@ import TableRow from "@mui/material/TableRow";
 import { EDIT_ROLE } from "../../utils/mutations"
 import { useMutation, useQuery } from "@apollo/client";
 import { QUERY_ROLE } from "../../utils/queries";
+import { DELETE_ROLE } from "../../utils/mutations";
 
 export default function allRole() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -24,12 +25,32 @@ export default function allRole() {
   const [editedRole, setEditedRole] = useState(null);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [deleteRole] = useMutation(DELETE_ROLE);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { loading, data } = useQuery(QUERY_ROLE);
   const role = data?.role || {};
   console.log(role);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [editRole] = useMutation(EDIT_ROLE);
+
+  const handleDeleteClick = async (roleId) => {
+    try {
+      const { data } = await deleteRole({
+        variables: {
+          id: roleId,
+        },
+      });
+      console.log(data);
+        window.location.reload();
+     
+      console.log("Employee deleted:", data.deleteRole);
+    } catch (error) {
+      console.error("Error deleting department:", error);
+    }
+  };
+
 
   const handleEditRole = async (roleId, updatedFields) => {
     try {
@@ -210,8 +231,7 @@ export default function allRole() {
                   <TableCell align="right">{role.department[0].name}</TableCell>
                   <TableCell align="right">
                     <Grid item xs={8}>
-                      <DeleteIcon />
-                      <DeleteForeverIcon />
+                      <DeleteIcon  onClick={() => handleDeleteClick(role._id)} />
                     </Grid>
                   </TableCell>
                 </TableRow>

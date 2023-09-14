@@ -61,7 +61,9 @@ const resolvers = {
               `Manager with last name '${managerLastName}' not found.`
             );
           }
-          managerId = manager._id.toString();
+          if (manager) {
+            managerId = manager._id.toString();
+          }
         }
 
         // Create the new employee
@@ -69,11 +71,12 @@ const resolvers = {
           firstName,
           lastName,
           role: role._id.toString(),
-          manager: managerId.toString(),
+          manager: managerId,
         });
         console.log("New employee:", newEmployee);
         return newEmployee;
       } catch (error) {
+        console.error("Error creating employee:", error);
         throw new Error("Failed to create a new employee.");
       }
     },
@@ -135,7 +138,7 @@ const resolvers = {
         const newRole = await Role.create({
           title,
           salary,
-          department: department._id.toString(), 
+          department: department._id.toString(),
         });
 
         const populatedRole = await Role.findById(newRole._id).populate(
@@ -165,15 +168,17 @@ const resolvers = {
         }
         if (input.departmentName) {
           // Find or create the department based on the input name
-          let department = await Department.findOne({ name: input.departmentName });
+          let department = await Department.findOne({
+            name: input.departmentName,
+          });
           console.log("department:", department);
           if (!department) {
             // Create a new department if it doesn't exist
             department = new Department({ name: input.departmentName });
             await department.save();
           }
-    
-          role.set({ department: department._id })
+
+          role.set({ department: department._id });
         }
 
         const updatedRole = await role.save();
@@ -202,9 +207,13 @@ const resolvers = {
         }
 
         if (input.name && input.name !== department.name) {
-          const existingDepartment = await Department.findOne({ name: input.name });
+          const existingDepartment = await Department.findOne({
+            name: input.name,
+          });
           if (existingDepartment) {
-            throw new Error(`Department with name "${input.name}" already exists.`);
+            throw new Error(
+              `Department with name "${input.name}" already exists.`
+            );
           }
           department.name = input.name;
         }
@@ -213,6 +222,44 @@ const resolvers = {
         return updatedDepartment;
       } catch (error) {
         throw new Error(`Error updating department: ${error.message}`);
+      }
+    },
+    // Add these mutations to your Mutation resolver
+
+    deleteEmployee: async (_, { _id }) => {
+      try {
+        const deletedEmployee = await Employee.findByIdAndDelete(_id);
+        if (!deletedEmployee) {
+          throw new Error(`Employee with ID ${_id} not found.`);
+        }
+        return deletedEmployee;
+      } catch (error) {
+        throw new Error(`Error deleting employee: ${error.message}`);
+      }
+    },
+
+    deleteRole: async (_, { _id }) => {
+      try {
+        const deletedRole = await Role.findByIdAndDelete(_id);
+        if (!deletedRole) {
+          throw new Error(`Role with ID ${_id} not found.`);
+        }
+        return deletedRole;
+      } catch (error) {
+        throw new Error(`Error deleting role: ${error.message}`);
+      }
+    },
+
+    deleteDepartment: async (_, { _id }) => {
+      try {
+        const deletedDepartment = await Department.findOneAndDelete(_id);
+        console.log("deleted department", deletedDepartment)
+        if (!deletedDepartment) {
+          throw new Error(`Department with ID ${_id} not found.`);
+        }
+        return deletedDepartment;
+      } catch (error) {
+        throw new Error(`Error deleting department: ${error.message}`);
       }
     },
   },

@@ -31,9 +31,12 @@ const typeDefs = gql`
     createEmployee(input: CreateEmployeeInput!): Employee
     createRole(input: CreateRoleInput!): Role!
     createDepartment(input: CreateDepartmentInput!): Department
-    editEmployee(_id: ID!,input: EditEmployeeInput!): Employee
-    editRole(_id: ID!,input: EditRoleInput!): Role
-    editDepartment(_id: ID!,input: EditDepartmentInput!): Department
+    editEmployee(_id: ID!, input: EditEmployeeInput!): Employee
+    editRole(_id: ID!, input: EditRoleInput!): Role
+    editDepartment(_id: ID!, input: EditDepartmentInput!): Department
+    deleteEmployee(_id: ID!): Employee
+    deleteRole(_id: ID!): Role
+    deleteDepartment(_id: ID!): Department
   }
 
   input CreateEmployeeInput {
@@ -53,25 +56,24 @@ const typeDefs = gql`
   }
 
   input EditEmployeeInput {
-  _id: ID!
-  firstName: String
-  lastName: String
-  roleTitle: String
-  managerLastName: String
-}
+    _id: ID!
+    firstName: String
+    lastName: String
+    roleTitle: String
+    managerLastName: String
+  }
 
+  input EditRoleInput {
+    _id: ID!
+    title: String
+    salary: Float
+    departmentName: String
+  }
 
-input EditRoleInput {
-  _id: ID!
-  title: String
-  salary: Float
-  departmentName: String
-}
-
-input EditDepartmentInput {
-  _id: ID!
-  name: String
-}
+  input EditDepartmentInput {
+    _id: ID!
+    name: String
+  }
 `;
 
 module.exports = typeDefs;
