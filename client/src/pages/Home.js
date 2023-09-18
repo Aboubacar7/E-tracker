@@ -3,17 +3,14 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 function Home() {
-  // State to hold the welcome message
   const [welcomeMessage, setWelcomeMessage] = useState('Welcome to the App!');
 
-  // Function to change the welcome message
   const changeWelcomeMessage = () => {
     const messages = ['Hello!', 'Welcome back!', 'Enjoy your day!'];
     const randomIndex = Math.floor(Math.random() * messages.length);
     setWelcomeMessage(messages[randomIndex]);
   };
 
-  // UseEffect to change the message every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       changeWelcomeMessage();
@@ -22,10 +19,8 @@ function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // State to hold the user's choice
   const [userChoice, setUserChoice] = useState('');
 
-  // Function to handle user choice change
   const handleUserChoiceChange = (event) => {
     setUserChoice(event.target.value);
   };

@@ -28,13 +28,9 @@ export default function AddDepartmentCard() {
         },
       });
 
-      // Handle the response data as needed
       console.log('Department added:', data.createDepartment);
-
-      // Reset the form fields after successful submission
       setFormState({ name: '' });
     } catch (err) {
-      // Handle errors if needed
       console.error('Error adding department:', err.message);
     }
   };

@@ -136,10 +136,6 @@ export default function allRole() {
         height: "100vh",
       }}
     >
-      {/* <h1>All Roles</h1> */}
-
-
-     
       <Typography
         variant="h3"
         gutterBottom

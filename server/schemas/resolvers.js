@@ -46,15 +46,15 @@ const resolvers = {
     createEmployee: async (_, { input }) => {
       try {
         const { firstName, lastName, roleTitle, managerLastName } = input;
-        // Find the role by its title
+        
         const role = await Role.findOne({ title: roleTitle });
-        console.log("Found role:", role); // Add this line
+        console.log("Found role:", role); 
         if (!role) {
           throw new Error(`Role with title '${roleTitle}' not found.`);
         }
         let managerId = null;
         if (managerLastName) {
-          // Find the manager by last name if provided
+         
           const manager = await Employee.findOne({ lastName: managerLastName });
           if (!manager) {
             throw new Error(
@@ -66,7 +66,6 @@ const resolvers = {
           }
         }
 
-        // Create the new employee
         const newEmployee = await Employee.create({
           firstName,
           lastName,
@@ -167,13 +166,13 @@ const resolvers = {
           role.set({ salary: input.salary });
         }
         if (input.departmentName) {
-          // Find or create the department based on the input name
+         
           let department = await Department.findOne({
             name: input.departmentName,
           });
           console.log("department:", department);
           if (!department) {
-            // Create a new department if it doesn't exist
+          
             department = new Department({ name: input.departmentName });
             await department.save();
           }
@@ -224,7 +223,6 @@ const resolvers = {
         throw new Error(`Error updating department: ${error.message}`);
       }
     },
-    // Add these mutations to your Mutation resolver
 
     deleteEmployee: async (_, { _id }) => {
       try {

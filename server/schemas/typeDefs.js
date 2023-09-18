@@ -43,7 +43,7 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     roleTitle: String!
-    managerLastName: String # Use only managerLastName
+    managerLastName: String 
   }
 
   input CreateRoleInput {
